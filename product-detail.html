@@ -73,6 +73,8 @@
             max-width: 100%;
             height: auto;
             margin-bottom: 20px;
+            border-radius: 10px; /* Bo tròn góc ảnh */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm hiệu ứng bóng */
         }
 
         .product-detail-container h2 {
@@ -128,7 +130,7 @@
 <body>
     <header class="header">
         <a href="index.html" title="Quay lại Trang Chủ">
-            <img src="logo.png" alt="Logo Cửa Hàng" class="logo">
+            <img src="images/logo.png" alt="Logo Cửa Hàng" class="logo">
         </a>
         <h1>Cửa Hàng Sách</h1>
         <div class="header-buttons" id="header-buttons">
@@ -156,12 +158,12 @@
     <script>
         // Danh sách sản phẩm mẫu
         const products = [
-            { id: 1, name: "Sách A", price: "100,000đ", image: "product1.jpg", description: "Đây là sách A, rất thú vị và bổ ích." },
-            { id: 2, name: "Sách B", price: "150,000đ", image: "product2.jpg", description: "Đây là sách B, phù hợp cho mọi lứa tuổi." },
-            { id: 3, name: "Sách C", price: "200,000đ", image: "product3.jpg", description: "Đây là sách C, giúp bạn nâng cao kiến thức." },
-            { id: 4, name: "Sách D", price: "250,000đ", image: "product4.jpg", description: "Đây là sách D, đọc để hiểu thêm về thế giới." },
-            { id: 5, name: "Sách E", price: "300,000đ", image: "product5.jpg", description: "Đây là sách E, mang lại cảm hứng cho bạn." },
-            { id: 6, name: "Sách F", price: "350,000đ", image: "product6.jpg", description: "Đây là sách F, cuốn sách bán chạy nhất." }
+            { id: 1, name: "Sách A", price: "100,000đ", image: "images/product1.jpg", description: "Đây là sách A, rất thú vị và bổ ích." },
+            { id: 2, name: "Sách B", price: "150,000đ", image: "images/product2.jpg", description: "Đây là sách B, phù hợp cho mọi lứa tuổi." },
+            { id: 3, name: "Sách C", price: "200,000đ", image: "images/product3.jpg", description: "Đây là sách C, giúp bạn nâng cao kiến thức." },
+            { id: 4, name: "Sách D", price: "250,000đ", image: "images/product4.jpg", description: "Đây là sách D, đọc để hiểu thêm về thế giới." },
+            { id: 5, name: "Sách E", price: "300,000đ", image: "images/product5.jpg", description: "Đây là sách E, mang lại cảm hứng cho bạn." },
+            { id: 6, name: "Sách F", price: "350,000đ", image: "images/product6.jpg", description: "Đây là sách F, cuốn sách bán chạy nhất." }
         ];
 
         function displayProductDetail() {
