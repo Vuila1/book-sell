@@ -94,6 +94,16 @@
             text-align: left;
         }
 
+        .cart-item h3 a {
+            text-decoration: none;
+            color: #333;
+            transition: color 0.2s;
+        }
+
+        .cart-item h3 a:hover {
+            color: #007bff;
+        }
+
         .cart-item p {
             margin: 0;
             font-size: 16px;
@@ -158,6 +168,7 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
+            display: none; /* Ẩn mặc định */
         }
 
         .checkout-btn:hover {
@@ -202,7 +213,7 @@
         </div>
         <div class="total-container">
             <div id="total" class="total"></div>
-            <button class="checkout-btn" onclick="checkout()">Thanh Toán</button>
+            <button id="checkout-btn" class="checkout-btn" onclick="checkout()">Thanh Toán</button>
         </div>
     </main>
 
@@ -221,11 +232,13 @@
         function displayCart() {
             const cartContainer = document.getElementById("cart-container");
             const totalElement = document.getElementById("total");
+            const checkoutBtn = document.getElementById("checkout-btn");
             const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
             if (cart.length === 0) {
                 cartContainer.innerHTML = "<p>Giỏ hàng của bạn đang trống.</p>";
                 totalElement.innerHTML = "";
+                checkoutBtn.style.display = "none"; // Ẩn nút nếu giỏ hàng trống
                 return;
             }
 
@@ -236,7 +249,7 @@
                     return `
                         <div class="cart-item">
                             <img src="${item.image}" alt="${item.name}">
-                            <h3>${item.name}</h3>
+                            <h3><a href="product-detail.html" onclick="viewDetail(${item.id}); return false;">${item.name}</a></h3>
                             <div class="quantity-controls">
                                 <button onclick="changeQuantity(${index}, -1)">-</button>
                                 <input type="number" value="${item.quantity || 1}" min="1" onchange="updateQuantity(${index}, this.value)">
@@ -250,6 +263,12 @@
                 .join("");
 
             totalElement.innerHTML = `Tổng cộng: ${total.toLocaleString("vi-VN")}đ`;
+            checkoutBtn.style.display = "inline-block"; // Hiển thị nút nếu giỏ hàng không trống
+        }
+
+        function viewDetail(productId) {
+            localStorage.setItem("productDetailId", productId);
+            window.location.href = "product-detail.html";
         }
 
         function changeQuantity(index, delta) {
