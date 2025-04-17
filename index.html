@@ -51,6 +51,9 @@
                 <img src="logo.png" alt="Logo Cửa Hàng" class="logo">
             </a>
             <h1>Cửa Hàng Sách</h1>
+            <div class="header-buttons">
+                <button id="account-info">Đăng Nhập</button>
+            </div>
         </div>
     </header>
 
@@ -67,17 +70,12 @@
     </footer>
 
     <script>
-        // Mẫu sản phẩm
         const products = [
             { id: 1, name: "Sách A", price: "100,000đ", image: "product1.jpg" },
             { id: 2, name: "Sách B", price: "150,000đ", image: "product2.jpg" },
             { id: 3, name: "Sách C", price: "200,000đ", image: "product3.jpg" },
-            { id: 4, name: "Sách D", price: "120,000đ", image: "product4.jpg" },
-            { id: 5, name: "Sách E", price: "180,000đ", image: "product5.jpg" },
-            { id: 6, name: "Sách F", price: "170,000đ", image: "product6.jpg" },
         ];
 
-        // Hiển thị sản phẩm trên trang chủ
         function displayProducts() {
             const productList = document.getElementById("product-list");
             productList.innerHTML = products
@@ -86,28 +84,46 @@
                         <img src="${product.image}" alt="${product.name}">
                         <h3>${product.name}</h3>
                         <p>${product.price}</p>
+                        <button onclick="viewDetail(${product.id})">Xem Chi Tiết</button>
                         <button onclick="addToCart(${product.id})">Thêm vào Giỏ Hàng</button>
                     </div>
                 `)
                 .join("");
         }
 
-        // Thêm sản phẩm vào giỏ hàng
+        function viewDetail(productId) {
+            localStorage.setItem("productDetail", JSON.stringify(products.find(p => p.id === productId)));
+            window.location.href = "product-detail.html";
+        }
+
         function addToCart(productId) {
             const cart = JSON.parse(localStorage.getItem("cart")) || [];
             const product = products.find(p => p.id === productId);
-
-            if (product) {
-                cart.push(product);
-                localStorage.setItem("cart", JSON.stringify(cart));
-                alert(`${product.name} đã được thêm vào giỏ hàng!`);
-            } else {
-                alert("Có lỗi xảy ra. Không thể thêm sản phẩm vào giỏ hàng.");
-            }
+            cart.push(product);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert(`${product.name} đã được thêm vào giỏ hàng!`);
         }
 
-        // Tải sản phẩm sau khi trang được tải
-        document.addEventListener("DOMContentLoaded", displayProducts);
+        document.addEventListener("DOMContentLoaded", function () {
+            const accountInfo = document.getElementById("account-info");
+
+            if (localStorage.getItem("loggedIn") === "true") {
+                const username = localStorage.getItem("username");
+                accountInfo.textContent = `Đăng Xuất (${username})`;
+                accountInfo.onclick = () => {
+                    if (confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
+                        localStorage.removeItem("loggedIn");
+                        localStorage.removeItem("username");
+                        location.reload();
+                    }
+                };
+            } else {
+                accountInfo.textContent = "Đăng Nhập";
+                accountInfo.onclick = () => location.href = "login.html";
+            }
+
+            displayProducts();
+        });
     </script>
 </body>
 </html>
