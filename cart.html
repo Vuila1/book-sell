@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ Hàng</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .cart-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item img {
+            max-width: 60px;
+            height: auto;
+        }
+
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .clear-cart {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .clear-cart:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" title="Quay lại Trang Chủ">
+                <img src="logo.png" alt="Logo Cửa Hàng" class="logo">
+            </a>
+            <h1>Cửa Hàng Sách</h1>
+        </div>
+    </header>
+
+    <main>
+        <h2>Giỏ Hàng</h2>
+        <div class="cart-container" id="cart-container">
+            <!-- Sản phẩm trong giỏ hàng sẽ được hiển thị ở đây -->
+        </div>
+        <div class="total" id="total-price">Tổng giá: 0đ</div>
+        <button class="clear-cart" onclick="clearCart()">Xóa Tất Cả</button>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Đăng ký bản quyền bởi Thắng Lợi.</p>
+        <p>Liên hệ: <a href="mailto:buithangloi028@gmail.com">buithangloi028@gmail.com</a></p>
+    </footer>
+
+    <script>
+        // Nạp dữ liệu giỏ hàng từ localStorage
+        function loadCart() {
+            const cartContainer = document.getElementById("cart-container");
+            const totalPriceElement = document.getElementById("total-price");
+
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart.length === 0) {
+                cartContainer.innerHTML = "<p>Giỏ hàng trống.</p>";
+                return;
+            }
+
+            cartContainer.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div>
+                        <p>${item.name}</p>
+                        <p>Giá: ${item.price}</p>
+                    </div>
+                </div>
+            `).join("");
+
+            const totalPrice = cart.reduce((sum, item) => sum + parseInt(item.price.replace(",", "").replace("đ", "")), 0);
+            totalPriceElement.textContent = `Tổng giá: ${totalPrice}đ`;
+        }
+
+        // Xóa toàn bộ giỏ hàng
+        function clearCart() {
+            if (confirm("Bạn có chắc chắn muốn xóa tất cả sản phẩm trong giỏ hàng không?")) {
+                localStorage.removeItem("cart");
+                alert("Giỏ hàng đã được xóa!");
+                location.reload();
+            }
+        }
+
+        // Tải giỏ hàng sau khi trang được tải
+        document.addEventListener("DOMContentLoaded", loadCart);
+    </script>
+</body>
+</html>

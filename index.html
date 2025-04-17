@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .product-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .product-item img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .product-item h3 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .product-item button {
+            padding: 8px 16px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .product-item button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" title="Quay lại Trang Chủ">
+                <img src="logo.png" alt="Logo Cửa Hàng" class="logo">
+            </a>
+            <h1>Cửa Hàng Sách</h1>
+        </div>
+    </header>
+
+    <main>
+        <h2>Danh Sách Sản Phẩm</h2>
+        <div class="product-list" id="product-list">
+            <!-- Sản phẩm sẽ được hiển thị tại đây -->
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Đăng ký bản quyền bởi Thắng Lợi.</p>
+        <p>Liên hệ: <a href="mailto:buithangloi028@gmail.com">buithangloi028@gmail.com</a></p>
+    </footer>
+
+    <script>
+        // Mẫu sản phẩm
+        const products = [
+            { id: 1, name: "Sách A", price: "100,000đ", image: "product1.jpg" },
+            { id: 2, name: "Sách B", price: "150,000đ", image: "product2.jpg" },
+            { id: 3, name: "Sách C", price: "200,000đ", image: "product3.jpg" },
+            { id: 4, name: "Sách D", price: "120,000đ", image: "product4.jpg" },
+            { id: 5, name: "Sách E", price: "180,000đ", image: "product5.jpg" },
+            { id: 6, name: "Sách F", price: "170,000đ", image: "product6.jpg" },
+        ];
+
+        // Hiển thị sản phẩm trên trang chủ
+        function displayProducts() {
+            const productList = document.getElementById("product-list");
+            productList.innerHTML = products
+                .map(product => `
+                    <div class="product-item">
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>${product.price}</p>
+                        <button onclick="addToCart(${product.id})">Thêm vào Giỏ Hàng</button>
+                    </div>
+                `)
+                .join("");
+        }
+
+        // Thêm sản phẩm vào giỏ hàng
+        function addToCart(productId) {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const product = products.find(p => p.id === productId);
+
+            if (product) {
+                cart.push(product);
+                localStorage.setItem("cart", JSON.stringify(cart));
+                alert(`${product.name} đã được thêm vào giỏ hàng!`);
+            } else {
+                alert("Có lỗi xảy ra. Không thể thêm sản phẩm vào giỏ hàng.");
+            }
+        }
+
+        // Tải sản phẩm sau khi trang được tải
+        document.addEventListener("DOMContentLoaded", displayProducts);
+    </script>
+</body>
+</html>

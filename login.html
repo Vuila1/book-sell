@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" title="Quay lại Trang Chủ">
+                <img src="logo.png" alt="Logo Cửa Hàng" class="logo">
+            </a>
+            <h1>Cửa Hàng Sách</h1>
+        </div>
+    </header>
+
+    <main>
+        <h2>Đăng Nhập</h2>
+        <form id="login-form">
+            <label for="username">Tài Khoản:</label>
+            <input type="text" id="username" required>
+            <label for="password">Mật Khẩu:</label>
+            <input type="password" id="password" required>
+            <button type="submit">Đăng Nhập</button>
+        </form>
+        <p id="login-message"></p>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Đăng ký bản quyền bởi Thắng Lợi.</p>
+        <p>Liên hệ: <a href="mailto:buithangloi028@gmail.com">buithangloi028@gmail.com</a></p>
+    </footer>
+
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const message = document.getElementById("login-message");
+
+            // Kiểm tra thông tin đăng nhập
+            if (username === "admin" && password === "1") {
+                localStorage.setItem("loggedIn", "true");
+                localStorage.setItem("username", username);
+                window.location.href = "index.html"; // Chuyển về trang chủ sau khi đăng nhập
+            } else {
+                message.textContent = "Sai tài khoản hoặc mật khẩu!";
+                message.style.color = "red";
+            }
+        });
+    </script>
+</body>
+</html>
