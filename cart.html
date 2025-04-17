@@ -6,40 +6,87 @@
     <title>Giỏ Hàng</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .header .logo {
+            max-height: 40px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-buttons button {
+            padding: 10px 20px;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .header-buttons button:hover {
+            background-color: #777;
+        }
+
+        .main-content {
+            padding: 80px 20px;
+        }
+
         .cart-container {
             max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            margin: 0 auto;
+            text-align: center;
         }
 
         .cart-item {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
+            align-items: center;
+            padding: 10px;
             border-bottom: 1px solid #ddd;
         }
 
-        .cart-item:last-child {
-            border-bottom: none;
-        }
-
         .cart-item img {
-            max-width: 60px;
+            max-width: 80px;
             height: auto;
         }
 
-        .total {
+        .cart-item h3 {
             font-size: 18px;
-            font-weight: bold;
-            text-align: right;
-            margin-top: 20px;
+            margin: 0;
         }
 
-        .clear-cart {
-            margin-top: 20px;
-            padding: 10px 20px;
+        .cart-item p {
+            margin: 0;
+        }
+
+        .cart-item button {
+            padding: 5px 10px;
             background-color: #333;
             color: white;
             border: none;
@@ -47,72 +94,140 @@
             cursor: pointer;
         }
 
-        .clear-cart:hover {
+        .cart-item button:hover {
             background-color: #555;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <div class="header-container">
-            <a href="index.html" title="Quay lại Trang Chủ">
-                <img src="logo.png" alt="Logo Cửa Hàng" class="logo">
-            </a>
-            <h1>Cửa Hàng Sách</h1>
+        <a href="index.html" title="Quay lại Trang Chủ">
+            <img src="logo.png" alt="Logo Cửa Hàng" class="logo">
+        </a>
+        <h1>Giỏ Hàng</h1>
+        <div class="header-buttons" id="header-buttons">
+            <!-- Các nút sẽ được hiển thị thông qua JavaScript -->
         </div>
     </header>
 
-    <main>
-        <h2>Giỏ Hàng</h2>
+    <main class="main-content">
         <div class="cart-container" id="cart-container">
-            <!-- Sản phẩm trong giỏ hàng sẽ được hiển thị ở đây -->
+            <!-- Giỏ hàng sẽ được hiển thị tại đây -->
         </div>
-        <div class="total" id="total-price">Tổng giá: 0đ</div>
-        <button class="clear-cart" onclick="clearCart()">Xóa Tất Cả</button>
+        <div id="total" class="total"></div>
     </main>
 
     <footer class="footer">
-        <p>&copy; 2025 Đăng ký bản quyền bởi Thắng Lợi.</p>
+        <p>&copy; 2025 Đăng ký bản quyền bởi <strong>Thắng Lợi</strong>.</p>
         <p>Liên hệ: <a href="mailto:buithangloi028@gmail.com">buithangloi028@gmail.com</a></p>
+        <p>
+            Theo dõi chúng tôi:
+            <a href="https://facebook.com" target="_blank">Facebook</a> |
+            <a href="https://twitter.com" target="_blank">Twitter</a> |
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+        </p>
     </footer>
 
     <script>
-        // Nạp dữ liệu giỏ hàng từ localStorage
-        function loadCart() {
+        function displayCart() {
             const cartContainer = document.getElementById("cart-container");
-            const totalPriceElement = document.getElementById("total-price");
-
+            const totalElement = document.getElementById("total");
             const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
             if (cart.length === 0) {
-                cartContainer.innerHTML = "<p>Giỏ hàng trống.</p>";
+                cartContainer.innerHTML = "<p>Giỏ hàng của bạn đang trống.</p>";
+                totalElement.innerHTML = "";
                 return;
             }
 
-            cartContainer.innerHTML = cart.map(item => `
-                <div class="cart-item">
-                    <img src="${item.image}" alt="${item.name}">
-                    <div>
-                        <p>${item.name}</p>
-                        <p>Giá: ${item.price}</p>
-                    </div>
-                </div>
-            `).join("");
+            let total = 0;
+            cartContainer.innerHTML = cart
+                .map((item, index) => {
+                    total += parseInt(item.price.replace(/[^0-9]/g, ""));
+                    return `
+                        <div class="cart-item">
+                            <img src="${item.image}" alt="${item.name}">
+                            <h3>${item.name}</h3>
+                            <p>${item.price}</p>
+                            <button onclick="removeFromCart(${index})">Xóa</button>
+                        </div>
+                    `;
+                })
+                .join("");
 
-            const totalPrice = cart.reduce((sum, item) => sum + parseInt(item.price.replace(",", "").replace("đ", "")), 0);
-            totalPriceElement.textContent = `Tổng giá: ${totalPrice}đ`;
+            totalElement.innerHTML = `Tổng cộng: ${total.toLocaleString("vi-VN")}đ`;
         }
 
-        // Xóa toàn bộ giỏ hàng
-        function clearCart() {
-            if (confirm("Bạn có chắc chắn muốn xóa tất cả sản phẩm trong giỏ hàng không?")) {
-                localStorage.removeItem("cart");
-                alert("Giỏ hàng đã được xóa!");
-                location.reload();
+        function removeFromCart(index) {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            displayCart();
+        }
+
+        function updateHeaderButtons() {
+            const headerButtons = document.getElementById("header-buttons");
+            const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+
+            let buttonsHTML = "";
+
+            if (isLoggedIn) {
+                buttonsHTML += `<button id="cart-button" onclick="goToCart()">Giỏ Hàng</button>`;
+                buttonsHTML += `<button id="account-info">Đăng Xuất (${localStorage.getItem("username") || "User"})</button>`;
+            } else {
+                buttonsHTML += `<button id="account-info">Đăng Nhập</button>`;
+            }
+
+            headerButtons.innerHTML = buttonsHTML;
+
+            const accountInfoButton = document.getElementById("account-info");
+            if (isLoggedIn) {
+                accountInfoButton.onclick = () => {
+                    if (confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
+                        localStorage.removeItem("loggedIn");
+                        localStorage.removeItem("username");
+                        location.reload();
+                    }
+                };
+            } else {
+                accountInfoButton.onclick = () => location.href = "login.html";
             }
         }
 
-        // Tải giỏ hàng sau khi trang được tải
-        document.addEventListener("DOMContentLoaded", loadCart);
+        function goToCart() {
+            window.location.href = "cart.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            updateHeaderButtons();
+            displayCart();
+        });
     </script>
 </body>
 </html>
