@@ -5,111 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi Tiết Sản Phẩm</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .product-detail-container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .product-detail-container img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 20px;
-        }
-
-        .product-detail-container h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .product-detail-container p {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .product-detail-container button {
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .product-detail-container button[disabled] {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        .product-detail-container button:hover:not([disabled]) {
-            background-color: #555;
-        }
-    </style>
 </head>
 <body>
-    <header>
-        <h1 style="text-align: center;">Chi Tiết Sản Phẩm</h1>
+    <header class="header">
+        <a href="index.html" title="Quay lại Trang Chủ">
+            <img src="logo.png" alt="Logo Cửa Hàng" class="logo">
+        </a>
+        <h1>Cửa Hàng Sách</h1>
     </header>
 
-    <main>
-        <div class="product-detail-container" id="product-detail">
-            <!-- Chi tiết sản phẩm sẽ được hiển thị tại đây -->
-        </div>
+    <main class="main-content">
+        <div id="product-detail"></div>
     </main>
 
+    <footer class="footer">
+        <p>&copy; 2025 Đăng ký bản quyền bởi <strong>Thắng Lợi</strong>.</p>
+    </footer>
+
     <script>
-        // Danh sách sản phẩm
-        const products = [
-            { id: 1, name: "Sách A", price: "100,000đ", image: "product1.jpg", description: "Đây là sách A, rất thú vị và bổ ích." },
-            { id: 2, name: "Sách B", price: "150,000đ", image: "product2.jpg", description: "Đây là sách B, phù hợp cho mọi lứa tuổi." },
-            { id: 3, name: "Sách C", price: "200,000đ", image: "product3.jpg", description: "Đây là sách C, giúp bạn nâng cao kiến thức." },
-            { id: 4, name: "Sách D", price: "250,000đ", image: "product4.jpg", description: "Đây là sách D, đọc để hiểu thêm về thế giới." },
-            { id: 5, name: "Sách E", price: "300,000đ", image: "product5.jpg", description: "Đây là sách E, mang lại cảm hứng cho bạn." },
-            { id: 6, name: "Sách F", price: "350,000đ", image: "product6.jpg", description: "Đây là sách F, cuốn sách bán chạy nhất." }
-        ];
-
-        // Lấy thông tin sản phẩm từ localStorage
-        const productId = localStorage.getItem("productDetailId");
-        const product = products.find(p => p.id === Number(productId));
-        const detailContainer = document.getElementById("product-detail");
-
-        if (product) {
-            const isLoggedIn = localStorage.getItem("loggedIn") === "true";
-
-            detailContainer.innerHTML = `
-                <img src="${product.image}" alt="${product.name}">
-                <h2>${product.name}</h2>
-                <p><strong>Giá:</strong> ${product.price}</p>
-                <p><strong>Mô tả:</strong> ${product.description}</p>
-                <button 
-                    onclick="addToCart(${product.id})" 
-                    ${!isLoggedIn ? 'disabled title="Vui lòng đăng nhập để thêm vào giỏ hàng"' : ''}
-                >
-                    Thêm vào Giỏ Hàng
-                </button>
-                <button onclick="goBack()">Quay Lại</button>
-            `;
-        } else {
-            detailContainer.innerHTML = "<p>Không tìm thấy sản phẩm. Vui lòng quay lại trang chủ.</p>";
-        }
-
-        function addToCart(productId) {
-            const cart = JSON.parse(localStorage.getItem("cart")) || [];
-            const product = products.find(p => p.id === productId);
-
-            cart.push(product);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            alert(`${product.name} đã được thêm vào giỏ hàng!`);
-        }
-
-        function goBack() {
-            window.history.back();
-        }
+        // Logic tương tự như trang chủ
     </script>
 </body>
 </html>
