@@ -77,9 +77,8 @@
                 <img src="logo.png" alt="Logo Cửa Hàng" class="logo">
             </a>
             <h1>Cửa Hàng Sách</h1>
-            <div class="header-buttons">
-                <button id="cart-button" onclick="goToCart()">Giỏ Hàng</button>
-                <button id="account-info">Đăng Nhập</button>
+            <div class="header-buttons" id="header-buttons">
+                <!-- Nút giỏ hàng và đăng nhập/đăng xuất sẽ được hiển thị thông qua JavaScript -->
             </div>
         </div>
     </header>
@@ -141,17 +140,24 @@
             alert(`${product.name} đã được thêm vào giỏ hàng!`);
         }
 
-        function goToCart() {
-            window.location.href = "cart.html";
-        }
+        function updateHeaderButtons() {
+            const headerButtons = document.getElementById("header-buttons");
+            const isLoggedIn = localStorage.getItem("loggedIn") === "true";
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const accountInfo = document.getElementById("account-info");
+            let buttonsHTML = "";
 
-            if (localStorage.getItem("loggedIn") === "true") {
-                const username = localStorage.getItem("username");
-                accountInfo.textContent = `Đăng Xuất (${username})`;
-                accountInfo.onclick = () => {
+            if (isLoggedIn) {
+                buttonsHTML += `<button id="cart-button" onclick="goToCart()">Giỏ Hàng</button>`;
+                buttonsHTML += `<button id="account-info">Đăng Xuất (${localStorage.getItem("username") || "User"})</button>`;
+            } else {
+                buttonsHTML += `<button id="account-info">Đăng Nhập</button>`;
+            }
+
+            headerButtons.innerHTML = buttonsHTML;
+
+            const accountInfoButton = document.getElementById("account-info");
+            if (isLoggedIn) {
+                accountInfoButton.onclick = () => {
                     if (confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
                         localStorage.removeItem("loggedIn");
                         localStorage.removeItem("username");
@@ -159,10 +165,16 @@
                     }
                 };
             } else {
-                accountInfo.textContent = "Đăng Nhập";
-                accountInfo.onclick = () => location.href = "login.html";
+                accountInfoButton.onclick = () => location.href = "login.html";
             }
+        }
 
+        function goToCart() {
+            window.location.href = "cart.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            updateHeaderButtons();
             displayProducts();
         });
     </script>
