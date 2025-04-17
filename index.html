@@ -39,7 +39,12 @@
             cursor: pointer;
         }
 
-        .product-item button:hover {
+        .product-item button[disabled] {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .product-item button:hover:not([disabled]) {
             background-color: #555;
         }
     </style>
@@ -78,6 +83,8 @@
 
         function displayProducts() {
             const productList = document.getElementById("product-list");
+            const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+
             productList.innerHTML = products
                 .map(product => `
                     <div class="product-item">
@@ -85,7 +92,12 @@
                         <h3>${product.name}</h3>
                         <p>${product.price}</p>
                         <button onclick="viewDetail(${product.id})">Xem Chi Tiết</button>
-                        <button onclick="addToCart(${product.id})">Thêm vào Giỏ Hàng</button>
+                        <button 
+                            onclick="addToCart(${product.id})" 
+                            ${!isLoggedIn ? 'disabled title="Vui lòng đăng nhập để thêm vào giỏ hàng"' : ''}
+                        >
+                            Thêm vào Giỏ Hàng
+                        </button>
                     </div>
                 `)
                 .join("");
