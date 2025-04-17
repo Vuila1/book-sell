@@ -5,6 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi Tiết Sản Phẩm</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .header .logo {
+            max-height: 40px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-buttons button {
+            padding: 10px 20px;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .header-buttons button:hover {
+            background-color: #777;
+        }
+
+        .main-content {
+            padding: 80px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .product-detail-container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-detail-container img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .product-detail-container h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .product-detail-container p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .product-detail-container button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .product-detail-container button[disabled] {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .product-detail-container button:hover:not([disabled]) {
+            background-color: #555;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -12,18 +131,115 @@
             <img src="logo.png" alt="Logo Cửa Hàng" class="logo">
         </a>
         <h1>Cửa Hàng Sách</h1>
+        <div class="header-buttons" id="header-buttons">
+            <!-- Các nút sẽ được hiển thị thông qua JavaScript -->
+        </div>
     </header>
 
     <main class="main-content">
-        <div id="product-detail"></div>
+        <div class="product-detail-container" id="product-detail">
+            <!-- Thông tin chi tiết sản phẩm sẽ được hiển thị tại đây -->
+        </div>
     </main>
 
     <footer class="footer">
         <p>&copy; 2025 Đăng ký bản quyền bởi <strong>Thắng Lợi</strong>.</p>
+        <p>Liên hệ: <a href="mailto:buithangloi028@gmail.com">buithangloi028@gmail.com</a></p>
+        <p>
+            Theo dõi chúng tôi:
+            <a href="https://facebook.com" target="_blank">Facebook</a> |
+            <a href="https://twitter.com" target="_blank">Twitter</a> |
+            <a href="https://instagram.com" target="_blank">Instagram</a>
+        </p>
     </footer>
 
     <script>
-        // Logic tương tự như trang chủ
+        // Danh sách sản phẩm mẫu
+        const products = [
+            { id: 1, name: "Sách A", price: "100,000đ", image: "product1.jpg", description: "Đây là sách A, rất thú vị và bổ ích." },
+            { id: 2, name: "Sách B", price: "150,000đ", image: "product2.jpg", description: "Đây là sách B, phù hợp cho mọi lứa tuổi." },
+            { id: 3, name: "Sách C", price: "200,000đ", image: "product3.jpg", description: "Đây là sách C, giúp bạn nâng cao kiến thức." },
+            { id: 4, name: "Sách D", price: "250,000đ", image: "product4.jpg", description: "Đây là sách D, đọc để hiểu thêm về thế giới." },
+            { id: 5, name: "Sách E", price: "300,000đ", image: "product5.jpg", description: "Đây là sách E, mang lại cảm hứng cho bạn." },
+            { id: 6, name: "Sách F", price: "350,000đ", image: "product6.jpg", description: "Đây là sách F, cuốn sách bán chạy nhất." }
+        ];
+
+        function displayProductDetail() {
+            const productId = localStorage.getItem("productDetailId");
+            const product = products.find(p => p.id === Number(productId));
+            const detailContainer = document.getElementById("product-detail");
+
+            if (product) {
+                const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+
+                detailContainer.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h2>${product.name}</h2>
+                    <p><strong>Giá:</strong> ${product.price}</p>
+                    <p><strong>Mô tả:</strong> ${product.description}</p>
+                    <button 
+                        onclick="addToCart(${product.id})" 
+                        ${!isLoggedIn ? 'disabled title="Vui lòng đăng nhập để thêm vào giỏ hàng"' : ''}
+                    >
+                        Thêm vào Giỏ Hàng
+                    </button>
+                    <button onclick="goBack()">Quay Lại</button>
+                `;
+            } else {
+                detailContainer.innerHTML = "<p>Không tìm thấy sản phẩm. Vui lòng quay lại trang chủ.</p>";
+            }
+        }
+
+        function addToCart(productId) {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const product = products.find(p => p.id === productId);
+
+            cart.push(product);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert(`${product.name} đã được thêm vào giỏ hàng!`);
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function updateHeaderButtons() {
+            const headerButtons = document.getElementById("header-buttons");
+            const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+
+            let buttonsHTML = "";
+
+            if (isLoggedIn) {
+                buttonsHTML += `<button id="cart-button" onclick="goToCart()">Giỏ Hàng</button>`;
+                buttonsHTML += `<button id="account-info">Đăng Xuất (${localStorage.getItem("username") || "User"})</button>`;
+            } else {
+                buttonsHTML += `<button id="account-info">Đăng Nhập</button>`;
+            }
+
+            headerButtons.innerHTML = buttonsHTML;
+
+            const accountInfoButton = document.getElementById("account-info");
+            if (isLoggedIn) {
+                accountInfoButton.onclick = () => {
+                    if (confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
+                        localStorage.removeItem("loggedIn");
+                        localStorage.removeItem("username");
+                        location.reload();
+                    }
+                };
+            } else {
+                accountInfoButton.onclick = () => location.href = "login.html";
+            }
+        }
+
+        function goToCart() {
+            window.location.href = "cart.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            updateHeaderButtons();
+            displayProductDetail();
+        });
     </script>
 </body>
 </html>
