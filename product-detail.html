@@ -1,1 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Sản Phẩm</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .product-detail-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
 
+        .product-detail-container img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .product-detail-container h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .product-detail-container p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .product-detail-container button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .product-detail-container button[disabled] {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .product-detail-container button:hover:not([disabled]) {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 style="text-align: center;">Chi Tiết Sản Phẩm</h1>
+    </header>
+
+    <main>
+        <div class="product-detail-container" id="product-detail">
+            <!-- Chi tiết sản phẩm sẽ được hiển thị tại đây -->
+        </div>
+    </main>
+
+    <script>
+        // Lấy thông tin sản phẩm từ localStorage
+        const product = JSON.parse(localStorage.getItem("productDetail"));
+        const detailContainer = document.getElementById("product-detail");
+
+        if (product) {
+            const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+
+            detailContainer.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
+                <h2>${product.name}</h2>
+                <p>Giá: ${product.price}</p>
+                <button 
+                    onclick="addToCart(${product.id})" 
+                    ${!isLoggedIn ? 'disabled title="Vui lòng đăng nhập để thêm vào giỏ hàng"' : ''}
+                >
+                    Thêm vào Giỏ Hàng
+                </button>
+                <button onclick="goBack()">Quay Lại</button>
+            `;
+        } else {
+            detailContainer.innerHTML = "<p>Không tìm thấy sản phẩm. Vui lòng quay lại trang chủ.</p>";
+        }
+
+        function addToCart(productId) {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const product = JSON.parse(localStorage.getItem("productDetail"));
+
+            cart.push(product);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert(`${product.name} đã được thêm vào giỏ hàng!`);
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>
