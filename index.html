@@ -55,6 +55,38 @@
 
         .main-content {
             padding: 80px 20px; /* Để tránh nội dung bị che bởi header cố định */
+            text-align: center;
+        }
+
+        .search-bar {
+            margin: 20px auto;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #555;
         }
 
         .product-list {
@@ -131,6 +163,10 @@
     </header>
 
     <main class="main-content">
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm...">
+            <button onclick="searchProducts()">Tìm kiếm</button>
+        </div>
         <h2>Danh Sách Sản Phẩm</h2>
         <div class="product-list" id="product-list">
             <!-- Sản phẩm sẽ được hiển thị tại đây -->
@@ -158,26 +194,36 @@
             { id: 6, name: "Sách F", price: "350,000đ", image: "product6.jpg" }
         ];
 
-        function displayProducts() {
+        function displayProducts(filteredProducts = products) {
             const productList = document.getElementById("product-list");
             const isLoggedIn = localStorage.getItem("loggedIn") === "true";
 
-            productList.innerHTML = products
-                .map(product => `
-                    <div class="product-item">
-                        <img src="${product.image}" alt="${product.name}">
-                        <h3>${product.name}</h3>
-                        <p>${product.price}</p>
-                        <button onclick="viewDetail(${product.id})">Xem Chi Tiết</button>
-                        <button 
-                            onclick="addToCart(${product.id})" 
-                            ${!isLoggedIn ? 'disabled title="Vui lòng đăng nhập để thêm vào giỏ hàng"' : ''}
-                        >
-                            Thêm vào Giỏ Hàng
-                        </button>
-                    </div>
-                `)
-                .join("");
+            productList.innerHTML = filteredProducts.length
+                ? filteredProducts
+                    .map(product => `
+                        <div class="product-item">
+                            <img src="${product.image}" alt="${product.name}">
+                            <h3>${product.name}</h3>
+                            <p>${product.price}</p>
+                            <button onclick="viewDetail(${product.id})">Xem Chi Tiết</button>
+                            <button 
+                                onclick="addToCart(${product.id})" 
+                                ${!isLoggedIn ? 'disabled title="Vui lòng đăng nhập để thêm vào giỏ hàng"' : ''}
+                            >
+                                Thêm vào Giỏ Hàng
+                            </button>
+                        </div>
+                    `)
+                    .join("")
+                : "<p>Không tìm thấy sản phẩm nào phù hợp.</p>";
+        }
+
+        function searchProducts() {
+            const query = document.getElementById("search-input").value.trim().toLowerCase();
+            const filteredProducts = products.filter(product =>
+                product.name.toLowerCase().includes(query)
+            );
+            displayProducts(filteredProducts);
         }
 
         function viewDetail(productId) {
