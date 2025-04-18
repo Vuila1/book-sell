@@ -48,10 +48,26 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            margin-bottom: 10px;
         }
 
         .login-container button:hover {
             background-color: #555;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .register-link a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -75,6 +91,9 @@
                 <input type="password" id="password" placeholder="Nhập mật khẩu" required>
                 <button type="submit">Đăng Nhập</button>
             </form>
+            <div class="register-link">
+                <p>Chưa có tài khoản? <a href="register.html">Đăng Ký</a></p>
+            </div>
         </div>
     </main>
 
