@@ -8,20 +8,26 @@
     <style>
         .login-container {
             max-width: 400px;
-            margin: 50px auto;
+            margin: 80px auto;
             padding: 20px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .login-container h2 {
             text-align: center;
             margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
         }
 
         .login-container label {
             display: block;
             margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
         }
 
         .login-container input {
@@ -30,6 +36,7 @@
             margin-bottom: 20px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            font-size: 16px;
         }
 
         .login-container button {
@@ -40,6 +47,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
 
         .login-container button:hover {
@@ -48,11 +56,12 @@
     </style>
 </head>
 <body>
-    <header>
+    <header class="header">
         <div class="header-container">
             <a href="index.html" title="Quay lại Trang Chủ">
-                <img src="logo.png" alt="Logo Cửa Hàng" class="logo">
+                <img src="images/logo.png" alt="Logo Cửa Hàng" class="logo">
             </a>
+            <h1 class="header-title">Nhà Sách Thắng Lợi</h1>
         </div>
     </header>
 
@@ -68,6 +77,11 @@
             </form>
         </div>
     </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Đăng ký bản quyền bởi <strong>Thắng Lợi</strong>.</p>
+        <p>Liên hệ: <a href="mailto:buithangloi028@gmail.com">buithangloi028@gmail.com</a></p>
+    </footer>
 
     <script>
         document.getElementById("loginForm").addEventListener("submit", function(event) {
